@@ -127,7 +127,7 @@ while True:
                 cv2.putText(frame, 'Warning! Warning!', (10, 60),
                             cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (0, 0, 255), 1)
         # otherwise, the eye aspect ratio is not below the blink
-                # threshold, so reset the counter and alarm
+        # threshold, so reset the counter and alarm
         else:
             COUNTER = 0
             ALARM_ON = False
@@ -135,10 +135,9 @@ while True:
                         cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (0, 255, 0), 1)
 
     # draw the computed eye aspect ratio on the frame to help
-        # with debugging and setting the correct eye aspect ratio
-        # thresholds and frame counters
-    cv2.putText(frame, 'EAR: {:.2f}'.format(
-        ear), (300, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (235, 225, 234), 1)
+    # with debugging and setting the correct eye aspect ratio
+    # thresholds and frame counters
+    cv2.putText(frame, 'EAR: {:.2f}'.format(ear), (300, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (235, 225, 234), 1)
 
     # show the frame
     cv2.imshow('Frame', frame)
