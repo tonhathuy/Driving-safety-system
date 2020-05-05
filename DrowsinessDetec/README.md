@@ -8,7 +8,10 @@ This program is used to detect drowsiness for any given person. In this program 
 2) install pip
 3) install opencv
 4) install dlib
-5) install other library if missing
+5) install playsound
+6) install imutils
+7) install scipy 
+8) install other library if missing
 
 ### Running
 ```
