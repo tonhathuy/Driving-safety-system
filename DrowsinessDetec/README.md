@@ -11,8 +11,9 @@ This program is used to detect drowsiness for any given person. In this program 
 5) install other library if missing
 
 ### Running
-activate virtual environments
-
+```
+activate <env>
+```
 ```
 python detec_drowsiness.py -p detec_drowsiness.py -a alarm.wav
 ```
