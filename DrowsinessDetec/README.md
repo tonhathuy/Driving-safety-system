@@ -4,14 +4,14 @@ This program is used to detect drowsiness for any given person. In this program 
 
 ### Prerequisites
 
-install python
-install pip
-install opencv
-install dlib
-and install other library if missing
+1) install python
+2) install pip
+3) install opencv
+4) install dlib
+5) install other library if missing
 
 ### Running
-activate <env>
+activate virtual environments
 
 ```
 python detec_drowsiness.py -p detec_drowsiness.py -a alarm.wav
