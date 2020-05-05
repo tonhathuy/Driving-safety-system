@@ -13,7 +13,9 @@ and install other library if missing
 ### Running
 activate <env>
 
+'''
 python detec_drowsiness.py -p detec_drowsiness.py -a alarm.wav
+'''
 
 ## License
 
