@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>image_23.png</filename>
+	<path>/home/huy/miniconda3/models/research/object_detection/images/train/image_23.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>480</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>helmet</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>270</xmin>
+			<ymin>136</ymin>
+			<xmax>478</xmax>
+			<ymax>219</ymax>
+		</bndbox>
+	</object>
+</annotation>

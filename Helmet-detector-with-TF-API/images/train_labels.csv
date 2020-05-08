@@ -1,0 +1,15 @@
+filename,width,height,class,xmin,ymin,xmax,ymax
+image_4.png,640,480,head,261,95,444,231
+image_25.png,640,480,helmet,263,129,462,222
+image_26.png,640,480,helmet,341,153,497,235
+image_30.png,640,480,helmet,263,181,451,258
+image_1.png,640,480,head,269,101,466,208
+image_22.png,640,480,helmet,266,132,471,227
+image_6.png,640,480,head,326,124,472,214
+image_24.png,640,480,helmet,280,135,463,202
+image_0.png,640,480,head,264,94,441,210
+image_3.png,640,480,head,269,99,433,187
+image_23.png,640,480,helmet,270,136,478,219
+image_21.png,640,480,helmet,263,137,438,217
+image_5.png,640,480,head,258,101,444,197
+image_2.png,640,480,head,264,93,448,212
