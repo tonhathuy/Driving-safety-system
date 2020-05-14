@@ -2,7 +2,6 @@ import numpy as np
 from PIL import ImageGrab
 import cv2
 import time
-import pyautogui
 from numpy import ones,vstack
 from numpy.linalg import lstsq
 from directkeys import PressKey, W, A, S, D

@@ -58,7 +58,6 @@ from PIL import ImageGrab
 import cv2
 import time
 from directkeys import ReleaseKey, PressKey, W, A, S, D
-import pyautogui
 
 
 def draw_lines(img, lines):

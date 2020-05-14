@@ -1,5 +1,5 @@
 # import pyautogui
-from keypress import PressKey,ReleaseKey, W, A, S, D
+from directkeys import PressKey,ReleaseKey, W, A, S, D
 import time
 
 for i in list(range(4))[::-1]:

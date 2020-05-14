@@ -120,7 +120,7 @@ while True:
     # to have a maximum width of 400 pixels
     frame = vs.read()
     frame = imutils.resize(frame, width=700)
-
+    sleep_detec(frame)
     # detect faces in the frame and determine if they are wearing a
     # face mask or not
     (locs, preds1, preds2) = detect_and_predict_mask(
@@ -150,7 +150,7 @@ while True:
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
         cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
-    sleep_detec(frame)
+    
     # show the output frame
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
