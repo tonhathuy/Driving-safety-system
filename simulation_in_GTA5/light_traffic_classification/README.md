@@ -1,4 +1,4 @@
-# Helmet Detector
+# light traffic Detector
 Create a light traffic detector using OpenCV, TensorFlow API, and Deep Learning.
 ## Requirements
  - Tensorflow 1.14 
