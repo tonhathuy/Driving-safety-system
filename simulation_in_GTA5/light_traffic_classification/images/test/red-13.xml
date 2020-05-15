@@ -1,0 +1,26 @@
+<annotation>
+	<folder>red</folder>
+	<filename>13.png</filename>
+	<path>D:\dataset\red\13.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>900</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>red</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>873</xmin>
+			<ymin>193</ymin>
+			<xmax>936</xmax>
+			<ymax>331</ymax>
+		</bndbox>
+	</object>
+</annotation>

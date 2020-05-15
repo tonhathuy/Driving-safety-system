@@ -1,0 +1,26 @@
+<annotation>
+	<folder>green</folder>
+	<filename>8.png</filename>
+	<path>D:\dataset\green\8.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>900</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>green</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>700</xmin>
+			<ymin>179</ymin>
+			<xmax>781</xmax>
+			<ymax>378</ymax>
+		</bndbox>
+	</object>
+</annotation>
