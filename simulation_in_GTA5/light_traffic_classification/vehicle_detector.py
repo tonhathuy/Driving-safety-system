@@ -82,7 +82,7 @@ def load_image_into_numpy_array(image):
 IMAGE_SIZE = (12, 8)
 
 with detection_graph.as_default():
-  with tf.Session(graph=detection_graph) as sess:
+  with tf.compat.v1.Session(graph=detection_graph) as sess:
     while True:
       #screen = cv2.resize(grab_screen(region=(0,40,1280,745)), (WIDTH,HEIGHT))
       screen = cv2.resize(grab_screen(region=(0,40,800,640)), (800,450))

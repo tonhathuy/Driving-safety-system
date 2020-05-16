@@ -33,4 +33,16 @@ python export_inference_graph.py --input_type image_tensor --pipeline_config_pat
 run file object_detection_with_own_model.ipynb with jupyter notebook
 
 
-
+# Object Detection 
+## Installation
+```bash
+pip install pywin32 pillow
+```
+## Run 
+```bash
+python vehicle_detector.py
+```
+# Light traffic detector and distance v1 on GTA5
+```bash
+python light_traffic.py
+```
