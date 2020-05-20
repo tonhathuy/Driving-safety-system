@@ -85,7 +85,7 @@ with detection_graph.as_default():
   with tf.compat.v1.Session(graph=detection_graph) as sess:
     while True:
       #screen = cv2.resize(grab_screen(region=(0,40,1280,745)), (WIDTH,HEIGHT))
-      screen = cv2.resize(grab_screen(region=(0,40,800,640)), (800,600))
+      screen = cv2.resize(grab_screen(region=(100,40,700,300)), (600,300))
       image_np = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
       # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
       image_np_expanded = np.expand_dims(image_np, axis=0)
@@ -112,17 +112,22 @@ with detection_graph.as_default():
           line_thickness=8)
 
       for i,b in enumerate(boxes[0]):
-        #                 red                    green                  yellow
-        if classes[0][i] == 0 or classes[0][i] == 1 or classes[0][i] == 2:
+        #                 red                  
+        if classes[0][i] == 1:
           if scores[0][i] >= 0.5:
             mid_x = (boxes[0][i][1]+boxes[0][i][3])/2
             mid_y = (boxes[0][i][0]+boxes[0][i][2])/2
-            apx_distance = round(((1 - (boxes[0][i][3] - boxes[0][i][1]))**4),1)
+            # print("box 1", boxes[0][i][1])
+            # print("box 3", boxes[0][i][3])
+            # print("box 0", boxes[0][i][0])
+            # print("box 2", boxes[0][i][2])
+            apx_distance = round(((1 - (boxes[0][i][3] - boxes[0][i][1]))**4),2)*10
             cv2.putText(image_np, '{}'.format(apx_distance), (int(mid_x*800),int(mid_y*600)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
+            
 
-            if apx_distance <=1:
+            if apx_distance:
               if mid_x > 0.3 and mid_x < 0.7:
-                cv2.putText(image_np, 'con ' + str(apx_distance*10) +  'm toi den do!!!', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,255), 3)
+                cv2.putText(image_np, 'con ' + str(apx_distance) +  'm toi den do!!!', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,255), 3)
 
       cv2.imshow('window',image_np)
       if cv2.waitKey(25) & 0xFF == ord('q'):
