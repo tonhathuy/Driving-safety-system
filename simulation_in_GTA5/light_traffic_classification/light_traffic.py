@@ -16,6 +16,12 @@ from matplotlib import pyplot as plt
 from PIL import Image
 from grabscreen import grab_screen
 import cv2
+from pygame import mixer
+
+mixer.init()
+ok = mixer.Sound('green.wav')
+notok = mixer.Sound('red.wav')
+warning = mixer.Sound('warning.wav')
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("models/research")
@@ -80,12 +86,14 @@ def load_image_into_numpy_array(image):
 
 # Size, in inches, of the output images.
 IMAGE_SIZE = (12, 8)
+counter = 0
+ALARM_ON = True
 
 with detection_graph.as_default():
   with tf.compat.v1.Session(graph=detection_graph) as sess:
     while True:
       #screen = cv2.resize(grab_screen(region=(0,40,1280,745)), (WIDTH,HEIGHT))
-      screen = cv2.resize(grab_screen(region=(100,40,700,300)), (600,300))
+      screen = cv2.resize(grab_screen(region=(400,200,600+400,400+200)), (600,400))
       image_np = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
       # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
       image_np_expanded = np.expand_dims(image_np, axis=0)
@@ -115,19 +123,26 @@ with detection_graph.as_default():
         #                 red                  
         if classes[0][i] == 1:
           if scores[0][i] >= 0.5:
-            mid_x = (boxes[0][i][1]+boxes[0][i][3])/2
-            mid_y = (boxes[0][i][0]+boxes[0][i][2])/2
-            # print("box 1", boxes[0][i][1])
-            # print("box 3", boxes[0][i][3])
-            # print("box 0", boxes[0][i][0])
-            # print("box 2", boxes[0][i][2])
-            apx_distance = round(((1 - (boxes[0][i][3] - boxes[0][i][1]))**4),2)*10
-            cv2.putText(image_np, '{}'.format(apx_distance), (int(mid_x*800),int(mid_y*600)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
-            
-
-            if apx_distance:
-              if mid_x > 0.3 and mid_x < 0.7:
-                cv2.putText(image_np, 'con ' + str(apx_distance) +  'm toi den do!!!', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,255), 3)
+            counter+=1
+            print(counter)
+            if counter >=2:
+                if not ALARM_ON:
+                  cv2.putText(image_np, 'WARNING!!!', (350,170), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,255), 3)
+                  ALARM_ON = True
+                  warning.play()
+                  ok.play()
+                  
+                counter = 0 
+        #                 green
+        elif classes[0][i] == 2:
+          if scores[0][i] >= 0.5:
+            counter -= 1
+            print(counter)
+            if counter <= -2:
+                if ALARM_ON:
+                  ALARM_ON = False
+                  notok.play()
+                counter=0
 
       cv2.imshow('window',image_np)
       if cv2.waitKey(25) & 0xFF == ord('q'):
