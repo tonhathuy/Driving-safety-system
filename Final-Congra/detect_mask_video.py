@@ -13,7 +13,12 @@ import time
 import cv2
 import os
 from sleep_detec import sleep_detec, eye_aspect_ratio
+import playsound
+from pygame import mixer
 
+mixer.init()
+ok = mixer.Sound('ok.wav')
+notok = mixer.Sound('notok.wav')
 
 def detect_and_predict_mask(frame, faceNet, maskNet, helmetNet):
     # grab the dimensions of the frame and then construct a blob
@@ -112,15 +117,15 @@ helmetNet = load_model(args["model2"])
 # initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
-time.sleep(2.0)
 
+counter = 0
+ALARM_ON = True
 # loop over the frames from the video stream
 while True:
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
     frame = vs.read()
     frame = imutils.resize(frame, width=700)
-    sleep_detec(frame)
     # detect faces in the frame and determine if they are wearing a
     # face mask or not
     (locs, preds1, preds2) = detect_and_predict_mask(
@@ -149,8 +154,27 @@ while True:
         cv2.putText(frame, label2, (startX, startY - 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
         cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-
-    
+        
+        if color == (0,255, 0):
+          counter+=1
+          print(counter)
+          if counter >=10:
+              if not ALARM_ON:
+                ALARM_ON = True
+                cv2.putText(frame, "tat ca OK", (50, 50),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 3)
+                # playsound.playsound("ok.wav")
+                ok.play()
+              counter = 0   
+        else:
+          counter -= 1
+          print(counter)
+          if counter <= -10:
+              if ALARM_ON:
+                ALARM_ON = False
+                # playsound.playsound("notok.wav")
+                notok.play()
+              counter=0
     # show the output frame
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
@@ -159,6 +183,7 @@ while True:
     if key == ord("q"):
         break
 
-# do a bit of cleanup
 cv2.destroyAllWindows()
 vs.stop()
+
+

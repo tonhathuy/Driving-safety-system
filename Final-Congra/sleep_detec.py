@@ -9,12 +9,14 @@ import time
 import cv2
 import playsound
 import dlib
+from pygame import mixer
 
 # define sound_alarm function
 
 
-def sound_alarm(path):
-    playsound.playsound(path)
+# def sound_alarm(path):
+    # playsound.playsound(path)
+
 
 
 def eye_aspect_ratio(eye):
@@ -31,6 +33,9 @@ def eye_aspect_ratio(eye):
 
 shape_predictor = "shape_predictor_68_face_landmarks.dat"
 alarm = "alarm.wav"
+
+mixer.init()
+sound = mixer.Sound(alarm)
 
 EYE_AR_THRESH = 0.3
 EYE_AR_CONSEC_FRAMES = 48
@@ -99,9 +104,10 @@ def sleep_detec(frame):
                     # and if so, start a thread to have the alarm
                     # sound played in the background
                     if alarm != '':
-                        t = Thread(target=sound_alarm, args=(alarm,))
-                        t.daemon = True
-                        t.start()
+                        # t = Thread(target=sound_alarm, args=(alarm,))
+                        # t.daemon = True
+                        # t.start()
+                        sound.play()
 
                 # draw an alarm on the frame
                 cv2.putText(frame, 'Eye: Close', (10, 30),

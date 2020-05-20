@@ -1,4 +1,4 @@
-# Face mask Detector
+# Helmet and mask detector
 Create a face mask detector using OpenCV, Keras/TensorFlow, and Deep Learning.
 ## Requirements
  - Tensorflow 2.0
@@ -6,22 +6,31 @@ Create a face mask detector using OpenCV, Keras/TensorFlow, and Deep Learning.
  - numpy
  - cv2
  - imutils
- 
+ - ~~playsound~~ -> pygame
 ## Installation
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install tensorflow, cv2, numpy, imutils.
 
+install tensorflow
 ```bash
-pip install tensorflow
+pip install tensorflow-gpu == 2.0
 ```
 ```bash
-pip install opencv-python
+pip install opencv-python numpy imutils pygame
 ```
+# Helmet detector
+## I. Create dataset
+### 1. Taking normal images of faces
+[SCUT-FBP5500v2](https://github.com/HCIILAB/SCUT-FBP5500-Database-Release)
+
+The SCUT-FBP5500 dataset has totally 5500 frontal faces with diverse properties (male/female, Asian/Caucasian, ages) and diverse labels (facial landmarks, beauty scores in 5 scales, beauty score distribution), which allows different computational model with different facial beauty prediction paradigms, such as appearance-based/shape-based facial beauty classification/regression/ranking model for male/female of Asian/Caucasian.
+
+### 2. Create Dataset Face Helmet
+- first, search and download image Face helmet from google search image with tool [Download All Images](https://chrome.google.com/webstore/detail/download-all-images/ifipmflagepipjokmbdecpmjbibjnakm?hl=en-US)
+- cut head and helmet with [my tool](https://github.com/tonhathuy/Driving-safety-system/blob/master/Tool/cut_face_for_dataset.py)
 ```bash
-pip install numpy
+python cut_face_for_dataset.py -d <directoryImageFolder> -o <directoryImageFolder after cut>
 ```
-```bash
-pip install imutils
-```
+## 
 
 ## Face mask detection with OpenCV in images 
 Open up a terminal, and execute the following command:
