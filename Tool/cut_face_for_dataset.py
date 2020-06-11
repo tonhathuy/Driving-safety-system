@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 
 import os
-from mask import create_mask
 from imutils import paths
 import numpy as np
 import argparse

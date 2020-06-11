@@ -6,6 +6,8 @@ def rescale_imgs(directory, size):
     for img in os.listdir(directory):
         im = Image.open(directory+img)
         im_resized = im.resize(size, Image.ANTIALIAS)
+        if not os.path.exists(directory+"resized"):
+            os.mkdir(directory+"resized")
         im_resized.save(directory+"resized/"+img)
 
 def name():
