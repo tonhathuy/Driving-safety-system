@@ -20,7 +20,7 @@ mixer.init()
 ok = mixer.Sound('ok.wav')
 notok = mixer.Sound('notok.wav')
 
-def detect_and_predict_mask(frame, faceNet, maskNet, helmetNet):
+def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
@@ -66,6 +66,13 @@ def detect_and_predict_mask(frame, faceNet, maskNet, helmetNet):
             face = preprocess_input(face)
             face = np.expand_dims(face, axis=0)
 
+            chin = frame[int(startY*2/3):endY, startX:endX]
+            chin = cv2.cvtColor(chin, cv2.COLOR_BGR2RGB)
+            chin = cv2.resize(chin, (224, 224))
+            chin = img_to_array(chin)
+            chin = preprocess_input(chin)
+            chin = np.expand_dims(chin, axis=0)
+
             # add the face and bounding boxes to their respective
             # lists
             faces.append(face)
@@ -76,7 +83,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet, helmetNet):
         # for faster inference we'll make batch predictions on *all*
         # faces at the same time rather than one-by-one predictions
         # in the above `for` loop
-        preds1 = maskNet.predict(faces)
+        preds1 = chinNet.predict(chin)
         preds2 = helmetNet.predict(faces)
     # return a 2-tuple of the face locations and their corresponding
     # locations
@@ -107,7 +114,7 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the hat straps detector model from disk
 print("[INFO] loading face mask detector model...")
-maskNet = load_model(args["model1"])
+chinNet = load_model(args["model1"])
 
 # load the helmet detector model from disk
 print("[INFO] loading face helmet detector model...")
@@ -124,22 +131,22 @@ while True:
     frame = vs.read()
     frame = imutils.resize(frame, width=700)
     (locs, preds1, preds2) = detect_and_predict_mask(
-        frame, faceNet, maskNet, helmetNet)
+        frame, faceNet, chinNet, helmetNet)
 
     
     for (box, pred1, pred2) in zip(locs, preds1, preds2):
         # unpack the bounding box and predictions
         (startX, startY, endX, endY) = box
-        (mask, withoutMask) = pred1
+        (straps, withoutTraps) = pred1
         (helmet, withoutHelmet) = pred2
         # determine the class label and color we'll use to draw
         # the bounding box and text
-        label1 = "Hat straps" if mask > withoutMask else "No hat straps"
+        label1 = "Hat straps" if straps > withoutTraps else "No hat straps"
         label2 = "Helmet" if helmet < withoutHelmet else "No helmet"
         color = (0, 255, 0) if label1 == "Hat straps" and label2 == "Helmet" else (
             0, 0, 255)
         # include the probability in the label
-        label1 = "{}: {:.2f}%".format(label1, max(mask, withoutMask) * 100)
+        label1 = "{}: {:.2f}%".format(label1, max(straps, withoutTraps) * 100)
         label2 = "{}: {:.2f}%".format(label2, max(helmet, withoutHelmet) * 100)
         # display the label and bounding box rectangle on the output
         # frame
