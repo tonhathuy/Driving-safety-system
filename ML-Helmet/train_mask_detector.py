@@ -28,18 +28,18 @@ import os
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", required=True,
                 help="path to input dataset")
-ap.add_argument("-p", "--plot", type=str, default="plot.png",
+ap.add_argument("-p", "--plot", type=str, default="plot_helmet.png",
                 help="path to output loss/accuracy plot")
 ap.add_argument("-m", "--model", type=str,
-                default="chin_detector.model",
+                default="helmet_detector.model",
                 help="path to output face mask detector model")
 args = vars(ap.parse_args())
 
 # initialize the initial learning rate, number of epochs to train for,
 # and batch size
 INIT_LR = 1e-4
-EPOCHS = 20
-BS = 32
+EPOCHS = 30
+BS = 42
 
 # grab the list of images in our dataset directory, then initialize
 # the list of data (i.e., images) and class images
