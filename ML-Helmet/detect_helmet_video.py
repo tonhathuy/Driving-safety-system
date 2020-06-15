@@ -1,5 +1,5 @@
 # USAGE
-# python detect_mask_video.py
+# python detect_mask_video.py 
 
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -13,7 +13,7 @@ import time
 import cv2
 import os
 # from sleep_detec import sleep_detec, eye_aspect_ratio
-import playsound
+# import playsound
 from pygame import mixer
 
 mixer.init()
@@ -90,10 +90,10 @@ ap.add_argument("-f", "--face", type=str,
                 help="path to face detector model directory")
 ap.add_argument("-m1", "--model1", type=str,
                 default="chin_detector.model",
-                help="path to trained face mask detector model 1")
+                help="path to trained hat straps detector model 1")
 ap.add_argument("-m2", "--model2", type=str,
                 default="helmet_detector.model",
-                help="path to trained face mask detector model 2")
+                help="path to trained helmet detector model 2")
 ap.add_argument("-c", "--confidence", type=float, default=0.5,
                 help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
@@ -105,16 +105,15 @@ weightsPath = os.path.sep.join([args["face"],
                                 "res10_300x300_ssd_iter_140000.caffemodel"])
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# load the face mask detector model from disk
+# load the hat straps detector model from disk
 print("[INFO] loading face mask detector model...")
 maskNet = load_model(args["model1"])
 
-# load the face mask detector model from disk
+# load the helmet detector model from disk
 print("[INFO] loading face helmet detector model...")
 helmetNet = load_model(args["model2"])
 
 
-# initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 
@@ -122,17 +121,12 @@ counter = 0
 ALARM_ON = True
 # loop over the frames from the video stream
 while True:
-    # grab the frame from the threaded video stream and resize it
-    # to have a maximum width of 400 pixels
     frame = vs.read()
     frame = imutils.resize(frame, width=700)
-    # detect faces in the frame and determine if they are wearing a
-    # face mask or not
     (locs, preds1, preds2) = detect_and_predict_mask(
         frame, faceNet, maskNet, helmetNet)
 
-    # loop over the detected face locations and their corresponding
-    # locations
+    
     for (box, pred1, pred2) in zip(locs, preds1, preds2):
         # unpack the bounding box and predictions
         (startX, startY, endX, endY) = box
