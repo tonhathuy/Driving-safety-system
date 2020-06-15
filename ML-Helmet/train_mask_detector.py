@@ -28,10 +28,10 @@ import os
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", required=True,
                 help="path to input dataset")
-ap.add_argument("-p", "--plot", type=str, default="plot_helmet.png",
+ap.add_argument("-p", "--plot", type=str, default="plot_chin.png",
                 help="path to output loss/accuracy plot")
 ap.add_argument("-m", "--model", type=str,
-                default="helmet_detector.model",
+                default="chin_detector.model",
                 help="path to output face mask detector model")
 args = vars(ap.parse_args())
 
