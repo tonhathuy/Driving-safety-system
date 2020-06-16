@@ -35,6 +35,7 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
     # initialize our list of faces, their corresponding locations,
     # and the list of predictions from our face mask network
     faces = []
+    chins = []
     locs = []
     preds1 = []
     preds2 = []
@@ -68,17 +69,20 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
             face = np.expand_dims(face, axis=0)
 
             chin = frame[int(startY+250):endY+50,
-                         int(startX-startX*1/3):endX+50]
-            chin = cv2.cvtColor(chin, cv2.COLOR_BGR2RGB)
-            chin = cv2.resize(chin, (224, 224))
-            chin = img_to_array(chin)
-            chin = preprocess_input(chin)
-            chin = np.expand_dims(chin, axis=0)
+                         int(startX - startX * 1 / 3): endX + 50]
+            if len(chin) != 0:
+                chin = cv2.cvtColor(chin, cv2.COLOR_BGR2RGB)
+                chin = cv2.resize(chin, (224, 224))
+                chin = img_to_array(chin)
+                chin = preprocess_input(chin)
+                chin = np.expand_dims(chin, axis=0)
 
             # add the face and bounding boxes to their respective
             # lists
             faces.append(face)
             # locs.append((startX, startY, endX, endY))
+            if len(chin) != 0:
+                chins.append(chin)
             locs.append((int(startX-startX*1/3),
                          int(startY+250), endX+50, endY+50))
 
@@ -87,7 +91,7 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
         # for faster inference we'll make batch predictions on *all*
         # faces at the same time rather than one-by-one predictions
         # in the above `for` loop
-        preds1 = chinNet.predict(chin)
+        preds1 = chinNet.predict(chins)
         preds2 = helmetNet.predict(faces)
     # return a 2-tuple of the face locations and their corresponding
     # locations
@@ -133,6 +137,9 @@ ALARM_ON = True
 # loop over the frames from the video stream
 while True:
     frame = vs.read()
+
+    if len(frame) == 0:
+        continue
     frame = imutils.resize(frame, width=700)
     (locs, preds1, preds2) = detect_and_predict_mask(
         frame, faceNet, chinNet, helmetNet)
