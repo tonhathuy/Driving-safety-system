@@ -1,5 +1,5 @@
 # USAGE
-# python detect_mask_video.py 
+# python detect_mask_video.py
 
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -19,6 +19,7 @@ from pygame import mixer
 mixer.init()
 ok = mixer.Sound('ok.wav')
 notok = mixer.Sound('notok.wav')
+
 
 def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
     # grab the dimensions of the frame and then construct a blob
@@ -55,7 +56,7 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
             # ensure the bounding boxes fall within the dimensions of
             # the frame
             (startX, startY) = (max(0, startX), max(0, startY-100))
-            (endX, endY) = (min(w - 1, endX), min(h - 1, endY+50))
+            (endX, endY) = (min(w - 1, endX), min(h - 1, endY))
 
             # extract the face ROI, convert it from BGR to RGB channel
             # ordering, resize it to 224x224, and preprocess it
@@ -66,7 +67,8 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
             face = preprocess_input(face)
             face = np.expand_dims(face, axis=0)
 
-            chin = frame[int(startY*2/3):endY, startX:endX]
+            chin = frame[int(startY+250):endY+50,
+                         int(startX-startX*1/3):endX+50]
             chin = cv2.cvtColor(chin, cv2.COLOR_BGR2RGB)
             chin = cv2.resize(chin, (224, 224))
             chin = img_to_array(chin)
@@ -76,7 +78,9 @@ def detect_and_predict_mask(frame, faceNet, chinNet, helmetNet):
             # add the face and bounding boxes to their respective
             # lists
             faces.append(face)
-            locs.append((startX, startY, endX, endY))
+            # locs.append((startX, startY, endX, endY))
+            locs.append((int(startX-startX*1/3),
+                         int(startY+250), endX+50, endY+50))
 
     # only make a predictions if at least one face was detected
     if len(faces) > 0:
@@ -133,7 +137,6 @@ while True:
     (locs, preds1, preds2) = detect_and_predict_mask(
         frame, faceNet, chinNet, helmetNet)
 
-    
     for (box, pred1, pred2) in zip(locs, preds1, preds2):
         # unpack the bounding box and predictions
         (startX, startY, endX, endY) = box
@@ -141,7 +144,7 @@ while True:
         (helmet, withoutHelmet) = pred2
         # determine the class label and color we'll use to draw
         # the bounding box and text
-        label1 = "Hat straps" if straps > withoutTraps else "No hat straps"
+        label1 = "Hat straps" if straps < withoutTraps else "No hat straps"
         label2 = "Helmet" if helmet < withoutHelmet else "No helmet"
         color = (0, 255, 0) if label1 == "Hat straps" and label2 == "Helmet" else (
             0, 0, 255)
@@ -155,27 +158,27 @@ while True:
         cv2.putText(frame, label2, (startX, startY - 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
         cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
-        
-        if color == (0,255, 0):
-          counter+=1
-          print(counter)
-          if counter >=10:
-              if not ALARM_ON:
-                ALARM_ON = True
-                cv2.putText(frame, "tat ca OK", (50, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 3)
-                # playsound.playsound("ok.wav")
-                ok.play()
-              counter = 0   
+
+        if color == (0, 255, 0):
+            counter += 1
+            print(counter)
+            if counter >= 10:
+                if not ALARM_ON:
+                    ALARM_ON = True
+                    cv2.putText(frame, "tat ca OK", (50, 50),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 3)
+                    # playsound.playsound("ok.wav")
+                    ok.play()
+                counter = 0
         else:
-          counter -= 1
-          print(counter)
-          if counter <= -10:
-              if ALARM_ON:
-                ALARM_ON = False
-                # playsound.playsound("notok.wav")
-                notok.play()
-              counter=0
+            counter -= 1
+            print(counter)
+            if counter <= -10:
+                if ALARM_ON:
+                    ALARM_ON = False
+                    # playsound.playsound("notok.wav")
+                    notok.play()
+                counter = 0
     # show the output frame
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
@@ -186,5 +189,3 @@ while True:
 
 cv2.destroyAllWindows()
 vs.stop()
-
-
