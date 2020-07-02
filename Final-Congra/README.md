@@ -7,7 +7,7 @@ Create a face mask detector using OpenCV, Keras/TensorFlow, and Deep Learning.
  - cv2
  - imutils
  - ~~playsound~~ -> pygame
-## Installation
+## [Installation](https://github.com/tonhathuy/Driving-safety-system/blob/master/Final-Congra/environment.yml)
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install tensorflow, cv2, numpy, imutils.
 
 install tensorflow
@@ -35,29 +35,5 @@ python cut_face_for_dataset.py -d <directoryImageFolder> -o <directoryImageFolde
 ## II training with Keras and TensorFlow
 There are a number of important updates in TensorFlow 2.0, including eager execution, automatic differentiation, and better multi-GPU/distributed training support, but the most important update is that Keras is now the official high-level deep learning API for TensorFlow. We used Keras and TensorFlow to train a classifier to automatically detect whether a person is wearing a helmet or not.
 
-``` python
-# import the necessary packages
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-# for Data augmentation
-from tensorflow.keras.applications import MobileNetV2
+## [DEMO](https://www.youtube.com/watch?v=WPadfu7S5rw)
 
-from tensorflow.keras.layers import AveragePooling2D
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Input
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.preprocessing.image import load_img
-from tensorflow.keras.utils import to_categorical
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from imutils import paths
-import matplotlib.pyplot as plt
-import numpy as np
-import argparse
-import os
-```
